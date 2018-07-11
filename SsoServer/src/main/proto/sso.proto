@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.remile.grpc.sso";
+option java_outer_classname = "SsoProto";
+option objc_class_prefix = "PB_";
+
+package sso;
+
+service SsoProcessor {
+    // 拉公钥
+    rpc generateKey(ReqGetRegKey) returns (RspGetRegKey) {}
+
+    // 注册
+    rpc doRegister(RegUserInfo) returns (RegResult) {}
+
+    // 登录
+    rpc doLogin(ReqLogin) returns (RspLogin) {}
+    rpc doLoginWithTicket(ReqLoginWithTicket) returns (RspLoginWithTicket) {}
+
+    // 在线
+    rpc keepTouch(stream CommonMessage) returns (stream CommonMessage) {}
+}
+
+message ReqGetRegKey { // 获取公钥请求
+
+}
+
+message RspGetRegKey { // 返回给客户端生成的key
+    bytes key = 1;
+}
+
+message RegUserInfo { // 加密过的用户信息，服务端解密后执行注册逻辑
+    string encryptedUserInfo = 1;
+}
+
+message RegResult { // 返回给客户端用户信息
+    int32 regResult = 1;  // 0=成功 1=用户名被占用 2=不明原因
+}
+
+message ReqLogin {
+    string encryptedUserInfo = 1;
+}
+
+message RspLogin {
+    int32 loginResult = 1; // 0=成功 1=账号密码失败 2=RSA证书失效
+    string encryptedTicket = 2;
+}
+
+message ReqLoginWithTicket {
+    string encryptedTicket = 1;
+}
+
+message RspLoginWithTicket {
+    int32 loginResult = 1; // 0=成功 1=账号密码失败 2=RSA证书失效
+}
+
+message CommonMessage {
+    int32 msgCode = 1; // 0=建立链接 1=下线指令
+    string msgContent = 2;
+    string sender = 3;
+    string senderMac = 4;
+}
