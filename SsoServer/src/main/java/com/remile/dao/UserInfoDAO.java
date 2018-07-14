@@ -14,11 +14,13 @@ public class UserInfoDAO {
     private static final String USER_NAME = "root";
     private static final String PASS_WORD = "940829Hg*";
 
-    private static final String SQL_SAVE = "insert into UserInfo(user_name, pass_word, login_mac) " +
+    private static final String SQL_SAVE = "insert into UserInfo(UserName, password, loginMac) " +
             "values(?, md5(?), ?);";
     private static final String SQL_REGISTER = "{call register_user(?, ?, ?)}";
     private static final String SQL_LOGIN = "{call login(?, ?, ?)}";
     private static final String SQL_LOGIN_BY_TICKET = "{call loginByTicket(?, ?, ?, ?)}";
+    private static final String SQL_CHECK_TICKET = "select count(*) from UserInfo " +
+            "where UserName=? and password=?";
 
     private DruidDataSource mDataSource;
     public static UserInfoDAO sInstance;
@@ -118,6 +120,26 @@ public class UserInfoDAO {
                 } else { // 票据已过期，通知客户端重新登录，进行身份校验
                     res = false;
                 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public boolean checkTicket(UserInfo userInfo) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        boolean res = false;
+        try {
+            conn = mDataSource.getConnection();
+            statement = conn.prepareStatement(SQL_CHECK_TICKET);
+            statement.setString(1, userInfo.getUserName());
+            statement.setString(2, userInfo.getPassWord());
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                int ticketRes = rs.getInt(1);
+                res = ticketRes == 1;
             }
         } catch (SQLException e) {
             e.printStackTrace();

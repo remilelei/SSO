@@ -28,6 +28,7 @@ public class SsoProcessorImpl extends SsoProcessorGrpc.SsoProcessorImplBase {
 
     public final static int MESSAGE_CODE_LINK = 0;
     public final static int MESSAGE_CODE_KICK = 1;
+    public final static int MESSAGE_CODE_LOGOUT = 2;
 
     public final static int TICKET_INVALID_DURATION = 30 * 1000;
 
@@ -197,26 +198,18 @@ public class SsoProcessorImpl extends SsoProcessorGrpc.SsoProcessorImplBase {
      */
     public StreamObserver<CommonMessage> keepTouch(StreamObserver<CommonMessage> responseObserver) {
         return new StreamObserver<CommonMessage>() {
+            String senderName;
+            String senderMac;
+
             @Override
             public void onNext(CommonMessage reqMsg) {
-                Log.info("TAG", "recv msg code=" + reqMsg.getMsgCode()
+                Log.info(TAG, "keepTouch recv msg code=" + reqMsg.getMsgCode()
                         + " sender=" + reqMsg.getSender() + " mac=" + reqMsg.getSenderMac()
                         + " content=" + reqMsg.getMsgContent());
+                senderName = reqMsg.getSender();
+                senderMac = reqMsg.getMsgContent();
 
-                int msgCode = reqMsg.getMsgCode();
-                switch (msgCode) {
-                    case MESSAGE_CODE_LINK: {
-                        // 收到客户端建立链接的请求
-                        onlineManager.handleLinkStartRequest(reqMsg, responseObserver);
-                        break;
-                    }
-                    case MESSAGE_CODE_KICK: {
-                        responseObserver.onCompleted();
-                        break;
-                    }
-                    default:
-                        break;
-                }
+                onlineManager.processCommonMessage(reqMsg, responseObserver);
             }
 
             @Override
@@ -226,7 +219,9 @@ public class SsoProcessorImpl extends SsoProcessorGrpc.SsoProcessorImplBase {
 
             @Override
             public void onCompleted() {
-
+                Log.info(TAG, "keepTouch onComplete");
+                responseObserver.onCompleted();
+                onlineManager.handleStreamComplete(senderName);
             }
         };
     }

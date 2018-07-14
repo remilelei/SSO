@@ -31,7 +31,7 @@ public class Client {
 
     public Client(String host, int port) throws SSLException {
         NettyChannelBuilder channelBuilder = NettyChannelBuilder.forAddress(host, port);
-        channelBuilder.sslContext(
+//        channelBuilder.sslContext(
 //                SslContextBuilder.forClient()
 //                        .sslProvider(
 //                        OpenSsl.isAlpnSupported()? SslProvider.OPENSSL: SslProvider.JDK)
@@ -43,10 +43,10 @@ public class Client {
 //                                ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
 //                                ApplicationProtocolNames.HTTP_2,ApplicationProtocolNames.HTTP_1_1
 //                        )).build()
-                GrpcSslContexts.forClient().trustManager(new File("ca.crt")).build()
-        );
+//                GrpcSslContexts.forClient().trustManager(new File("ca.crt")).build()
+//        );
 
-        channel = channelBuilder.build();
+        channel = channelBuilder.usePlaintext().build();
         registerBlockingStub = SsoProcessorGrpc.newBlockingStub(channel);
     }
 
@@ -55,10 +55,10 @@ public class Client {
         try {
             client = new Client("192.168.43.172", 50051);
 //            client.getPublicKey();
-            client.doRegister();
+//            client.doRegister();
 //            client.doLogin();
 //            client.doLoginWithTicket();
-//            client.createLink();
+            client.createLink();
 
             client.shutdown();
         } catch (SSLException e) {
