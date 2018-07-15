@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HelloworldActivity">
+    <FrameLayout
+        android:id="@+id/fl_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+    <!--
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".HelloworldActivity"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textSize="16sp"
+            android:text="gRPC Client Configuration"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/host_edit_text"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Enter Host" />
+            <EditText
+                android:id="@+id/port_edit_text"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="Enter Port" />
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/message_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter message to send" />
+
+        <Button
+            android:id="@+id/get_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="getPublicKey"
+            android:text="获取公钥" />
+
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="doRegister"
+            android:text="注册" />
+        <Button
+            android:id="@+id/test_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="doLogin"
+            android:text="登录" />
+        <Button
+            android:id="@+id/test_login_ticket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="doLoginWithTicket"
+            android:text="票据登录" />
+        <Button
+            android:id="@+id/test_keep_touch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="keepTouch"
+            android:text="建立长连接" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textSize="16sp"
+            android:text="Response:" />
+
+        <TextView
+            android:id="@+id/grpc_response_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars = "vertical"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textSize="16sp"
+            android:text="gRPC Server Configuration"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/server_port_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Server port" />
+
+        <Button
+            android:id="@+id/server_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startOrStopServer"
+            android:text="Start gRPC Server" />
+
+        <Button
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="testJni"
+            android:text="testJni"/>
+
+    </LinearLayout>
+    -->
+</LinearLayout>

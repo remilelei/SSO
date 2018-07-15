@@ -15,3 +15,7 @@ gradle-app.setting
 SsoServer/.idea/*
 SsoServer/build/*
 SsoServer/out/*
+
+SsoClientAndroid/.idea/*
+SsoClientAndroid/build/*
+SsoClientAndroid/out/*
