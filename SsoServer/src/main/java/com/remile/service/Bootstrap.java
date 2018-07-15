@@ -45,7 +45,7 @@ public class Bootstrap {
         SelfSignedCertificate ssc = new SelfSignedCertificate();
         Log.info(TAG, "***** server is started, port=" + SERVER_PORT);
         mServer = ServerBuilder.forPort(SERVER_PORT)
-//                .useTransportSecurity(ssc.certificate(), ssc.privateKey())
+                .useTransportSecurity(ssc.certificate(), ssc.privateKey())
 //                .useTransportSecurity(new File(CERTIFICATE), new File(PRIVTEKEY))
                 .addService(new SsoProcessorImpl())
                 .build().start();
