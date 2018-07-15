@@ -137,24 +137,8 @@ namespace ssodev {
             // 服务端发来的消息在这里处理
             int res = 0;
             while(stream->Read(&msg)) {
-                LOGD("msgcode=%d", msg.msgcode());
-                int msg_code = msg.msgcode();
-                if(msg_code == 0) {
-                    LOGI("link success");
-                } else if(msg_code == 1) {
-                    // 收到"下线包"，提示上层被踢下线。
-                    LOGI("kicked...");
-                    CommonMessage c;
-                    c.set_msgcode(1);
-                    stream->Write(c);
-                    stream->WritesDone();
-                    res = 1;
-                    break;
-                } else if(msg_code == 2) {
-                    // 后台批准下线
-                    LOGI("leave now");
-                    stream->WritesDone();
-                    res = 2;
+                int procRes = processMsgFromServer(&msg);
+                if(procRes != 0) { // 得到服务器下线消息，中断循环
                     break;
                 }
             }
@@ -229,5 +213,26 @@ namespace ssodev {
         }
         ret[str_content.length()] = '\0';
         return ret;
+    }
+
+    // 在这里处理服务器发过来的消息
+    int SsoClient::processMsgFromServer(CommonMessage *pMessage) {
+        LOGD("msgcode=%d", pMessage->msgcode());
+        int msg_code = pMessage->msgcode();
+        if(msg_code == 0) {
+            LOGI("link success");
+        } else if(msg_code == 1) {
+            // 收到"下线包"，提示上层被踢下线。
+            LOGI("kicked...");
+            CommonMessage c;
+            c.set_msgcode(1);
+            stream_->Write(c);
+            stream_->WritesDone();
+        } else if(msg_code == 2) {
+            // 后台批准下线
+            LOGI("leave now");
+            stream_->WritesDone();
+        }
+        return msg_code;
     }
 }

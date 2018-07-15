@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.tencent.remile.util.DeviceUtil;
+
 import io.grpc.helloworldexample.cpp.HelloworldActivity;
 import io.grpc.helloworldexample.cpp.R;
 
@@ -72,7 +74,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             if(act != null && act instanceof HelloworldActivity) {
                 String username = mUsername.getText().toString();
                 String password = mPassword.getText().toString();
-                String mac = ((HelloworldActivity) act).getMac();
+                String mac = DeviceUtil.getMac((act));
                 if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
                     ((HelloworldActivity)act).doLogin(username, password, mac);
                 } else {

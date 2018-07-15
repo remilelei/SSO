@@ -73,6 +73,9 @@ namespace ssodev {
     private:
         std::unique_ptr<SsoProcessor::Stub> stub_;
         std::shared_ptr<::grpc::ClientReaderWriter<::sso::CommonMessage, ::sso::CommonMessage>> stream_;
+
+        // 消息机制的处理
+        int processMsgFromServer(CommonMessage *pMessage);
     };
 }
 
