@@ -146,6 +146,7 @@ public class UserInfoDAO {
         PreparedStatement statement = null; // 查询当前用户的密码
         boolean res = false;
         try {
+            conn = mDataSource.getConnection();
             statement = conn.prepareStatement(SQL_FIND_PWD_BY_USERNAME);
             statement.setString(1, userInfo.getUserName());
             ResultSet rs1 = statement.executeQuery();

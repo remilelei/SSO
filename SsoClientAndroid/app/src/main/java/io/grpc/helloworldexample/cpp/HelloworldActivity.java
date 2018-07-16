@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 
 import io.grpc.helloworldexample.cpp.fragments.AfterLoginFragment;
@@ -25,6 +26,7 @@ public class HelloworldActivity extends AppCompatActivity {
         System.loadLibrary("grpc-helloworld");
     }
     private static final int MSG_KICKED = 1001;
+    private static final int MSG_TICKET_ERROR = 1002;
 
 
     public byte[] cachePublicKey = null;
@@ -46,6 +48,14 @@ public class HelloworldActivity extends AppCompatActivity {
 
 
         initFragment();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(!TextUtils.isEmpty(curUsername) && !TextUtils.isEmpty(cacheTicket)) {
+            logout(curUsername, cacheTicket);
+        }
     }
 
     private void initFragment() {
@@ -101,22 +111,19 @@ public class HelloworldActivity extends AppCompatActivity {
     }
     // 退出登录
     public void doLogout() {
-        GrpcTaskLogout task = new GrpcTaskLogout(this);
-        task.executeOnExecutor(
-                AsyncTask.THREAD_POOL_EXECUTOR,
-                curUsername,
-                cacheTicket);
+        if(!TextUtils.isEmpty(curUsername) && !TextUtils.isEmpty(cacheTicket)) {
+            GrpcTaskLogout task = new GrpcTaskLogout(this);
+            task.executeOnExecutor(
+                    AsyncTask.THREAD_POOL_EXECUTOR,
+                    curUsername,
+                    cacheTicket);
+        }
     }
 
 
     /**
      * fragment之间的替换跳转在这里
      */
-    public void jump2Login() {
-        getFragmentManager().beginTransaction()
-                .add(R.id.fl_fragment_container, mRegisterFragment)
-                .commit();
-    }
     public void jump2Register() {
         getFragmentManager().beginTransaction()
                 .replace(R.id.fl_fragment_container, mRegisterFragment)
@@ -159,6 +166,9 @@ public class HelloworldActivity extends AppCompatActivity {
             if (mServerTask != null) {
                 mMsgHandler.sendEmptyMessage(MSG_KICKED);
             }
+        } else if(msg == 2) {
+            Log.i("remile", "isRunServerTaskCancelled");
+            mMsgHandler.sendEmptyMessage(MSG_TICKET_ERROR);
         }
     }
 
@@ -178,6 +188,19 @@ public class HelloworldActivity extends AppCompatActivity {
                     });
                     builder.setCancelable(false);
                     builder.show();
+                    break;
+                case MSG_TICKET_ERROR:
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(HelloworldActivity.this);
+                    builder2.setTitle("from Server");
+                    builder2.setMessage("票据失效，重新登录");
+                    builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            back2Login();
+                        }
+                    });
+                    builder2.setCancelable(false);
+                    builder2.show();
                     break;
                     default:
                         break;

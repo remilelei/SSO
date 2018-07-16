@@ -29,8 +29,9 @@ public class SsoProcessorImpl extends SsoProcessorGrpc.SsoProcessorImplBase {
     public final static int MESSAGE_CODE_LINK = 0;
     public final static int MESSAGE_CODE_KICK = 1;
     public final static int MESSAGE_CODE_LOGOUT = 2;
+    public final static int MESSAGE_TICKET_INVALID = 3;
 
-    public final static int TICKET_INVALID_DURATION = 30 * 1000;
+    public final static int TICKET_INVALID_DURATION = 60 * 60 * 1000;
 
     /**
      * 这里抽象一个简单的会话层，用来管理用户在线状态。

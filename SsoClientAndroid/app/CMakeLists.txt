@@ -76,7 +76,7 @@ find_library(log-lib
  log)
 
 add_library(grpc-helloworld
-  SHARED
+  SHARED src/main/cpp/grpc-helloworld.cc
   src/main/cpp/djinni/sso_dev.hpp
   src/main/cpp/djinni/remile.h
   src/main/cpp/djinni/remile.cpp)

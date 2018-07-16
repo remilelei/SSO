@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.remile.service.sso.SsoProcessorImpl.MESSAGE_CODE_KICK;
 import static com.remile.service.sso.SsoProcessorImpl.MESSAGE_CODE_LINK;
+import static com.remile.service.sso.SsoProcessorImpl.MESSAGE_TICKET_INVALID;
 
 /**
  * 这个类顾名思义用于管理用户在线状态
@@ -48,6 +49,9 @@ public class UserOnlineStatusManager {
                     handleLinkStartRequest(message, responseObserver);
                 } else {
                     Log.warning(TAG, "keepTouch keep touch failed, userInfo=" + userInfo);
+                    CommonMessage linkReply = CommonMessage.newBuilder()
+                            .setMsgCode(MESSAGE_TICKET_INVALID).setSender("Server")
+                            .setMsgContent("ticket invalid").build();
                     responseObserver.onCompleted();
                 }
                 break;

@@ -53,6 +53,6 @@ public class GrpcTaskGetKey extends AsyncTask<String, Void, byte[]> {
         activity.cachePublicKey = result;
         Log.i("remile", "public Key=" + activity.cachePublicKey.length + ":" + sb.toString());
 
-        activity.jump2Login();
+        activity.back2Login();
     }
 }

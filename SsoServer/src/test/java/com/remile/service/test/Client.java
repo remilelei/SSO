@@ -143,7 +143,10 @@ public class Client {
         String mac = "mac-" + new Random().nextInt();
         Log.info(TAG, "createLink mac=" + mac);
         CommonMessage msg = CommonMessage.newBuilder().setMsgCode(0)
-                .setSender("remile").setSenderMac(mac).build();
+                .setSender("remile").setSenderMac(mac)
+                .setMsgContent("Xv5dCE6GCb+LvMTlQ+Jq/B/VU9ngHLO+LCw8VKV/2SA6TTr9KMGLjDgsfrdksUMFK/qSRaSVXyKk\n" +
+                        "Gw+Dww7NBVxn+ANvGAJk0xKBevYBBZU4oAVkKQmAZGmGWYGBY9CRm/XLt6SKEnuwzLQ8olmuuC/2\n" +
+                        "AuczZsbh5vdgzcEmlfc=").build();
         SsoProcessorGrpc.SsoProcessorStub stub = SsoProcessorGrpc.newStub(channel);
         StreamObserver<CommonMessage> responseObserver = new StreamObserver<CommonMessage>() {
             StreamObserver<CommonMessage> requestObserver = stub.keepTouch(this);

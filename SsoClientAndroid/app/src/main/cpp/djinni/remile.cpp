@@ -138,8 +138,8 @@ namespace ssodev {
             // 服务端发来的消息在这里处理
             int res = 0;
             while(stream->Read(&msg)) {
-                int procRes = processMsgFromServer(&msg);
-                if(procRes != 0) { // 得到服务器下线消息，中断循环
+                res = processMsgFromServer(&msg);
+                if(res != 0) { // 得到服务器下线消息，中断循环
                     break;
                 }
             }
@@ -232,6 +232,9 @@ namespace ssodev {
         } else if(msg_code == 2) {
             // 后台批准下线
             LOGI("leave now");
+            stream_->WritesDone();
+        } else if(msg_code == 3) {
+            LOGI("ticket invalid");
             stream_->WritesDone();
         }
         return msg_code;

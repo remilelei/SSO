@@ -113,7 +113,7 @@ public class RSAUtil {
         StringBuffer sb = new StringBuffer();
         sb.append('[')
                 .append(userInfo.getUserName()).append(',')
-                .append(MD5Util.toMD5(userInfo.getPassWord())).append(',')
+                .append(userInfo.getPassWord()).append(',')
                 .append(userInfo.getLoginMac()).append(',')
                 .append(System.currentTimeMillis()).append(']');
         String plainTextTicket = sb.toString();

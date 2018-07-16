@@ -6,7 +6,6 @@
 #include <android/log.h>
 #include <google/protobuf/compiler/plugin.pb.h>
 #include "sso.grpc.pb.h"
-#include "helloworld.grpc.pb.h"
 #include "djinni/remile.h"
 
 #define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, "remileNative", __VA_ARGS__)
@@ -201,6 +200,7 @@ Java_io_grpc_helloworldexample_cpp_HelloworldActivity_keepTouch(JNIEnv *env, job
     if(client != nullptr) {
         res = client->do_keep_touch(username, mac, ticket);
     }
+    LOGI("keep touch finished reason=%d", res);
     env->CallVoidMethod(instance, handleServerMessage, res);
 
     env->ReleaseStringUTFChars(username_, username);
