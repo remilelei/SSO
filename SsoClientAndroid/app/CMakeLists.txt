@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(helloworld_PROTOBUF_PROTOC_EXECUTABLE "/usr/local/bin/protoc" CACHE STRING "Protoc binary on host")
 set(helloworld_GRPC_CPP_PLUGIN_EXECUTABLE "/usr/local/bin/grpc_cpp_plugin" CACHE STRING "gRPC CPP plugin binary on host")
 
-set(GRPC_SRC_DIR ../../../../)
+set(GRPC_SRC_DIR ../../deps/grpc)
 
 set(GRPC_BUILD_DIR ../grpc/outputs/${ANDROID_ABI})
 file(MAKE_DIRECTORY ${GRPC_BUILD_DIR})
@@ -57,10 +57,10 @@ function(android_protobuf_grpc_generate_cpp SRC_FILES HDR_FILES INCLUDE_ROOT)
   set(${HDR_FILES} ${${HDR_FILES}} PARENT_SCOPE)
 endfunction()
 
-set(PROTO_BASE_DIR ${GRPC_SRC_DIR}/examples/protos)
+set(PROTO_BASE_DIR src/main/proto)
 
 android_protobuf_grpc_generate_cpp(
-  HELLOWORLD_PROTO_SRCS HELLOWORLD_PROTO_HDRS ${PROTO_BASE_DIR} ${PROTO_BASE_DIR}/helloworld.proto
+  HELLOWORLD_PROTO_SRCS HELLOWORLD_PROTO_HDRS ${PROTO_BASE_DIR}
   ${PROTO_BASE_DIR}/sso.proto)
 
 add_library(helloworld_proto_lib
@@ -76,7 +76,7 @@ find_library(log-lib
  log)
 
 add_library(grpc-helloworld
-  SHARED src/main/cpp/grpc-helloworld.cc
+  SHARED
   src/main/cpp/djinni/sso_dev.hpp
   src/main/cpp/djinni/remile.h
   src/main/cpp/djinni/remile.cpp)
