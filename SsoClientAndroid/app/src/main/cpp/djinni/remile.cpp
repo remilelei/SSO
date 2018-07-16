@@ -13,9 +13,10 @@ namespace ssodev {
     }
 
     SsoClient::SsoClient(const std::string & address, const std::string & ca) {
-        grpc::SslCredentialsOptions opts;
-        opts.pem_root_certs = ca;
-        auto channelCredentials = grpc::SslCredentials(opts);
+//        grpc::SslCredentialsOptions opts;
+//        opts.pem_root_certs = ca;
+//        auto channelCredentials = grpc::SslCredentials(opts);
+        auto channelCredentials = grpc::InsecureChannelCredentials();
         auto channel = grpc::CreateChannel(address, channelCredentials);
         stub_ = SsoProcessor::NewStub(channel);
     }
